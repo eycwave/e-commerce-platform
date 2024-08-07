@@ -1,0 +1,138 @@
+/* Genel Ürün Sayfası Stilleri */
+.products-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  .products-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .product-item {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    overflow: hidden;
+  }
+  
+  .product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .product-details {
+    padding: 10px;
+  }
+  
+  .product-name {
+    font-size: 1.25rem;
+    margin: 10px 0;
+  }
+  
+  .product-description {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .product-price {
+    font-size: 1.1rem;
+    color: #007bff;
+  }
+  
+  /* Admin Butonları ve Form */
+  .admin-button-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .toggle-form {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .toggle-form:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Form Stilleri */
+  .form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .form-field {
+    margin-bottom: 15px;
+  }
+  
+  .form-container input {
+    width: calc(100% - 20px);
+  }
+  
+  .form-container button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .form-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive Tasarım */
+  @media (max-width: 768px) {
+    .products-list {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .product-item {
+      max-width: 90%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form-container {
+      padding: 15px;
+    }
+  
+    .form-container h2 {
+      font-size: 1.25rem;
+    }
+  
+    .form-container input {
+      padding: 8px;
+      font-size: 0.875rem;
+    }
+  
+    .form-container button {
+      padding: 10px;
+      font-size: 0.875rem;
+    }
+  
+    .toggle-form {
+      font-size: 0.875rem;
+    }
+  }
+  
