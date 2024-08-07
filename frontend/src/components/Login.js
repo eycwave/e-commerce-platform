@@ -12,10 +12,7 @@ const Login = ({ onRegisterClick, onSuccess }) => {
     setMessage('');
 
     try {
-      const response = await axios.post('/api/v1/auth/authenticate', {
-        email,
-        password,
-      });
+      const response = await axios.post('/api/v1/auth/login', {email,password,});
       localStorage.setItem('token', response.data.token);
       setTimeout(() => {
         onSuccess();
