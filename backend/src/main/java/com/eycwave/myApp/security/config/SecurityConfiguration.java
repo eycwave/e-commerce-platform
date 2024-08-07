@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,16 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static com.eycwave.myApp.enums.Permission.ADMIN_CREATE;
-import static com.eycwave.myApp.enums.Permission.ADMIN_DELETE;
-import static com.eycwave.myApp.enums.Permission.ADMIN_READ;
-import static com.eycwave.myApp.enums.Permission.ADMIN_UPDATE;
 import static com.eycwave.myApp.enums.Role.ADMIN;
-import static org.springframework.http.HttpMethod.DELETE;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
-import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -43,18 +36,17 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers("/api/products").authenticated()
-                                .requestMatchers("/api/products/**").hasAnyRole(ADMIN.name())
-                                .requestMatchers(GET, "/api/products/**").hasAnyAuthority(ADMIN_READ.name())
-                                .requestMatchers(POST, "/api/products/**").hasAnyAuthority(ADMIN_CREATE.name())
-                                .requestMatchers(PUT, "/api/products/**").hasAnyAuthority(ADMIN_UPDATE.name())
-                                .requestMatchers(DELETE, "/api/products/**").hasAnyAuthority(ADMIN_DELETE.name())
+                                .requestMatchers(GET, "/api/products").permitAll()
+                                .requestMatchers(POST, "/api/products/**").hasRole(ADMIN.name())
+                                .requestMatchers(PUT, "/api/products/**").hasRole(ADMIN.name())
+                                .requestMatchers(DELETE, "/api/products/**").hasRole(ADMIN.name())
                                 .anyRequest()
                                 .authenticated()
                 )
-                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(Customizer.withDefaults());
         ;
 
         return http.build();
@@ -68,7 +60,8 @@ public class SecurityConfiguration {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedHeaders("*");
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }

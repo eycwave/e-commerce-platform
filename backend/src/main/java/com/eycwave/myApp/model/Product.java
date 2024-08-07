@@ -20,6 +20,7 @@ public class Product {
     private String description;
     private double price;
     private Timestamp createdAt;
+    private String image;
 /*
     // Relations
     @ManyToMany(mappedBy = "productList")
