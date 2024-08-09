@@ -1,138 +1,244 @@
-/* Genel Ürün Sayfası Stilleri */
 .products-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
-  }
-  
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  flex: 3;
+  transition: all 0.3s ease;
+}
+
+
+.cart-container {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-height: calc(100vh - 40px); 
+  overflow-y: auto; 
+  transition: margin-left 0.3s ease; 
+}
+
+
+.product-item {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow: hidden;
+  position: relative; 
+  transition: transform 0.3s ease; 
+}
+
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  position: relative; 
+}
+
+
+.product-details {
+  padding: 10px;
+}
+
+.product-name {
+  font-size: 1.25rem;
+  margin: 10px 0;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #555;
+}
+
+.product-price {
+  font-size: 1.1rem;
+  color: #007bff;
+}
+
+
+.admin-button-container {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.toggle-form {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 20px; 
+}
+
+.toggle-form:hover {
+  background-color: #0056b3;
+}
+
+
+.product-form-container {
+  background: white;
+  padding: 20px;
+  border-radius: 12px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  max-width: 400px;
+  position: absolute; 
+  top: 100%; 
+  right: 0; 
+  z-index: 10;
+  display: none; 
+  border: 1px solid #ddd; 
+}
+
+.admin-button-container .product-form-container {
+  display: block; 
+}
+
+
+.product-form-field {
+  margin-bottom: 15px;
+}
+
+.product-form-container input {
+  width: calc(100% - 20px);
+}
+
+.product-form-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.product-form-container button:hover {
+  background-color: #0056b3;
+}
+
+.cart-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item p {
+  margin: 0;
+}
+
+
+.create-order-button {
+  background-color: #28a745;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.create-order-button:hover {
+  background-color: #218838;
+}
+
+
+.delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 20;
+}
+
+.delete-button:hover {
+  background: darkred;
+}
+
+
+@media (max-width: 768px) {
   .products-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    grid-template-columns: 1fr 1fr;
   }
-  
-  .product-item {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 300px;
-    text-align: center;
-    overflow: hidden;
+
+  .cart-container {
+    margin-left: 0;
+    margin-top: 20px;
+    flex: 1 1 100%;
   }
-  
-  .product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+
+  .product-form-container {
+    position: static;
+    max-width: 100%;
   }
-  
-  .product-details {
-    padding: 10px;
+}
+
+@media (max-width: 480px) {
+  .products-list {
+    grid-template-columns: 1fr;
   }
-  
-  .product-name {
+
+  .product-form-container {
+    padding: 15px;
+  }
+
+  .product-form-container h2 {
     font-size: 1.25rem;
-    margin: 10px 0;
   }
-  
-  .product-description {
-    font-size: 1rem;
-    color: #555;
+
+  .product-form-container input {
+    padding: 8px;
+    font-size: 0.875rem;
   }
-  
-  .product-price {
-    font-size: 1.1rem;
-    color: #007bff;
+
+  .product-form-container button {
+    padding: 10px;
+    font-size: 0.875rem;
   }
-  
-  /* Admin Butonları ve Form */
-  .admin-button-container {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
+
   .toggle-form {
-    background-color: #007bff;
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
-  
-  .toggle-form:hover {
-    background-color: #0056b3;
+
+  .cart-container {
+    margin-left: 0;
+    margin-top: 20px;
+    flex: 1 1 100%;
   }
-  
-  /* Form Stilleri */
-  .form-container {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: auto;
-  }
-  
-  .form-field {
-    margin-bottom: 15px;
-  }
-  
-  .form-container input {
-    width: calc(100% - 20px);
-  }
-  
-  .form-container button {
-    width: 100%;
-    padding: 12px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .form-container button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Responsive Tasarım */
-  @media (max-width: 768px) {
-    .products-list {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .product-item {
-      max-width: 90%;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .form-container {
-      padding: 15px;
-    }
-  
-    .form-container h2 {
-      font-size: 1.25rem;
-    }
-  
-    .form-container input {
-      padding: 8px;
-      font-size: 0.875rem;
-    }
-  
-    .form-container button {
-      padding: 10px;
-      font-size: 0.875rem;
-    }
-  
-    .toggle-form {
-      font-size: 0.875rem;
-    }
-  }
-  
+}

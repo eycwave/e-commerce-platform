@@ -2,25 +2,25 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f0f2f5;
   margin: 0;
-  overflow-x: hidden; /* Yatay kaydırma çubuğu göstermek için gerekli */
+  overflow-x: hidden;
 }
 
 .app {
   display: flex;
-  flex-direction: column; /* İçeriğin dikey olarak yerleşmesini sağlar */
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: auto; /* İçeriğin taşması durumunda kaydırma çubuğu gösterir */
+  overflow: auto;
 }
 
 .container {
   width: 100%;
-  max-width: 1200px; /* İçeriğin genişliğini sınırlar */
+  max-width: 1200px;
   padding: 20px;
   box-sizing: border-box;
 }
 
-/* Form ve Butonlar */
 .form-container {
   background: white;
   padding: 20px;
@@ -103,7 +103,7 @@ body {
   margin-top: 10px;
 }
 
-/* Responsive Tasarım */
+/* Responsive Design */
 @media (max-width: 768px) {
   .app {
     padding: 20px;
