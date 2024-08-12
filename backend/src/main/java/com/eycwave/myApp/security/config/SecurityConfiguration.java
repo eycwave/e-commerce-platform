@@ -3,7 +3,6 @@ package com.eycwave.myApp.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static com.eycwave.myApp.enums.Role.ADMIN;
+import static com.eycwave.myApp.enums.Role.USER;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
@@ -36,10 +36,24 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
+
                                 .requestMatchers(GET, "/api/products").permitAll()
                                 .requestMatchers(POST, "/api/products/**").hasRole(ADMIN.name())
                                 .requestMatchers(PUT, "/api/products/**").hasRole(ADMIN.name())
                                 .requestMatchers(DELETE, "/api/products/**").hasRole(ADMIN.name())
+
+                                .requestMatchers(GET, "/api/orders").hasRole(ADMIN.name())
+                                .requestMatchers(POST, "/api/orders/**").hasRole(ADMIN.name())
+                                .requestMatchers(PUT, "/api/orders/**").hasRole(ADMIN.name())
+                                .requestMatchers(DELETE, "/api/orders/**").hasRole(ADMIN.name())
+                                .requestMatchers(GET, "/api/orders/user/{userUuid}").hasRole(USER.name())
+                                .requestMatchers(POST, "/api/orders/save").hasRole(USER.name())
+
+                                .requestMatchers(GET, "/api/carts/**").permitAll()
+                                .requestMatchers(POST, "/api/carts/**").permitAll()
+                                .requestMatchers(PUT, "/api/carts/**").permitAll()
+                                .requestMatchers(DELETE, "/api/carts/**").permitAll()
+
                                 .anyRequest()
                                 .authenticated()
                 )
