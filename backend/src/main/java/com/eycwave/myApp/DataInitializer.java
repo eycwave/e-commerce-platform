@@ -2,7 +2,9 @@ package com.eycwave.myApp;
 
 import com.eycwave.myApp.enums.Role;
 import com.eycwave.myApp.model.User;
+import com.eycwave.myApp.repository.CartRepository;
 import com.eycwave.myApp.repository.UserRepository;
+import com.eycwave.myApp.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +22,8 @@ public class DataInitializer {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CartService cartService;
     @Bean
     public CommandLineRunner init() {
         return args -> {
@@ -34,6 +38,7 @@ public class DataInitializer {
                 admin.setPassword(passwordEncoder.encode("123"));
                 admin.setRole(Role.ADMIN);
                 userRepository.save(admin);
+                cartService.saveCart(admin.getUuid());
             }
         };
     }
