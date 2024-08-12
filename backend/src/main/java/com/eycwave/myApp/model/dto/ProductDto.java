@@ -1,4 +1,4 @@
-package com.eycwave.myApp.dto;
+package com.eycwave.myApp.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

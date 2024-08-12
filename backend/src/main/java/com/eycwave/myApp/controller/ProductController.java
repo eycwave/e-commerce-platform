@@ -1,12 +1,10 @@
 package com.eycwave.myApp.controller;
 
-import com.eycwave.myApp.dto.ProductDto;
-import com.eycwave.myApp.model.Product;
+import com.eycwave.myApp.model.dto.ProductDto;
 import com.eycwave.myApp.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

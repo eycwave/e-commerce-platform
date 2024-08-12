@@ -1,13 +1,16 @@
 package com.eycwave.myApp.service;
 
-import com.eycwave.myApp.dto.ProductDto;
+import com.eycwave.myApp.model.dto.ProductDto;
 import com.eycwave.myApp.mapper.ProductMapper;
 import com.eycwave.myApp.model.Product;
 import com.eycwave.myApp.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
