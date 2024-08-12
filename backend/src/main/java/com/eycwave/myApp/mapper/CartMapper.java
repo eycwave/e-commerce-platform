@@ -1,25 +1,25 @@
 package com.eycwave.myApp.mapper;
 
 import com.eycwave.myApp.dto.CartDto;
-import com.eycwave.myApp.dto.response.CartResponse;
 import com.eycwave.myApp.model.Cart;
 import com.eycwave.myApp.model.Product;
+import com.eycwave.myApp.repository.ProductRepository;
 import com.eycwave.myApp.service.ProductService;
 import com.eycwave.myApp.utils.CommonUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class CartMapper {
-    private final ProductService productService;
+    private final ProductRepository productRepository;
 
-    public CartMapper(ProductService productService) {
-        this.productService = productService;
+    public CartMapper(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
     public CartDto convertToDto(Cart cart) {
@@ -27,15 +27,15 @@ public class CartMapper {
 
         List<Product> productList = Arrays.stream(uuids)
                 .filter(uuid -> !uuid.isEmpty())
-                .map(uuid -> productService.getProductByUuid(uuid))
+                .map(productRepository::findByUuid)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .collect(Collectors.toList());
 
         CartDto cartDto = new CartDto();
         BeanUtils.copyProperties(cart, cartDto);
         cartDto.setProductUuids(uuids); // Set all UUIDs including empty ones
-        cartDto.setProductList(productList); // Set only products for non-empty UUIDs
+        cartDto.setProductList(productList); // Set list of ProductDto
         return cartDto;
     }
-
-
 }

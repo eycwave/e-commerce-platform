@@ -43,11 +43,10 @@ public class SecurityConfiguration {
                                 .requestMatchers(DELETE, "/api/products/**").hasRole(ADMIN.name())
 
                                 .requestMatchers(GET, "/api/orders").hasRole(ADMIN.name())
-                                .requestMatchers(POST, "/api/orders/**").hasRole(ADMIN.name())
+                                .requestMatchers(GET, "/api/orders/**").permitAll()
+                                .requestMatchers(POST, "/api/orders/**").permitAll()
                                 .requestMatchers(PUT, "/api/orders/**").hasRole(ADMIN.name())
                                 .requestMatchers(DELETE, "/api/orders/**").hasRole(ADMIN.name())
-                                .requestMatchers(GET, "/api/orders/user/{userUuid}").hasRole(USER.name())
-                                .requestMatchers(POST, "/api/orders/save").hasRole(USER.name())
 
                                 .requestMatchers(GET, "/api/carts/**").permitAll()
                                 .requestMatchers(POST, "/api/carts/**").permitAll()

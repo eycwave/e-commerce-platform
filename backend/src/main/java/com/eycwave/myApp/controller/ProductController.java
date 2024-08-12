@@ -1,5 +1,6 @@
 package com.eycwave.myApp.controller;
 
+import com.eycwave.myApp.dto.ProductDto;
 import com.eycwave.myApp.model.Product;
 import com.eycwave.myApp.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -20,29 +21,23 @@ public class ProductController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
+
     }
 
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> addProduct(@RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
+    public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) {
+        return new ResponseEntity<>(productService.saveProduct(productDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        if (productService.deleteProduct(id)) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 
 }
