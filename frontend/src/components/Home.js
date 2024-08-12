@@ -20,7 +20,7 @@ const Home = () => {
   const [cartUuid, setCartUuid] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
 
-  // 1- Decode token for "Role" and "userUuid"
+  // Decode token for "Role" and "userUuid"
   useEffect(() => {
     const decodeToken = () => {
       try {
@@ -38,7 +38,7 @@ const Home = () => {
     decodeToken();
   }, []);
 
-  // 2- Get products directly from DB.
+  // Get products directly from DB.
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -122,6 +122,7 @@ const Home = () => {
         return cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
       };
 
+      console.log(userUuid);
       const updatedCartResponse = await axios.get(`/api/carts/user/${userUuid}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -130,26 +131,41 @@ const Home = () => {
 
       setCart(updatedCartResponse.data.productList || []);
       setCartUuid(cartUuid);
-
-      const totalPrice = updateCartTotals(updatedCartResponse.data.productList);
-      setTotalPrice(totalPrice);
+      setTotalPrice(updateCartTotals(updatedCartResponse.data.productList));
     } catch (error) {
       setError('Failed to add product to cart.');
       console.error('Error adding to cart:', error);
     }
   };
   
-  // Update cart total amount
-  const updateCartTotals = (cartItems) => {
-    return cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
-  };
-
-  // WILL EDIT.
+  // Create order
   const handleCreateOrder = async () => {
     try {
-      //...
-      setCart([]); // Clear the cart after creating the order
-      setCartUuid(''); // Clear the cart UUID
+      const orderPayload = {
+        userUuid: userUuid,
+        productUuids: cart.map((product) => product.uuid),
+        totalAmount: totalPrice 
+      };
+  
+      const token = localStorage.getItem('token');
+  
+      await axios.post('/api/orders/save', orderPayload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      await axios.put(`/api/carts/reset/${userUuid}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      setCart([]);
+      setCartUuid('');
+      setTotalPrice(0);
+      
+      
     } catch (error) {
       setError('Failed to create order.');
       console.error('Error creating order:', error);

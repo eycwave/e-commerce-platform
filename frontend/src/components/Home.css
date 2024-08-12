@@ -211,6 +211,16 @@ button:hover {
   background: darkred;
 }
 
+.my-orders-button {
+  margin-left: auto;
+  padding: 10px 20px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+}
+
 
 @media (max-width: 768px) {
   .products-list {
