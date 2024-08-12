@@ -16,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static com.eycwave.myApp.enums.Role.ADMIN;
-import static com.eycwave.myApp.enums.Role.USER;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration

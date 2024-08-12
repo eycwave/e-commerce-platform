@@ -1,5 +1,9 @@
-package com.eycwave.myApp.security.auth;
+package com.eycwave.myApp.controller;
 
+import com.eycwave.myApp.security.auth.AuthenticationResponse;
+import com.eycwave.myApp.service.AuthenticationService;
+import com.eycwave.myApp.security.auth.LoginRequest;
+import com.eycwave.myApp.security.auth.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

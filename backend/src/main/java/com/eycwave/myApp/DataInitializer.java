@@ -2,7 +2,6 @@ package com.eycwave.myApp;
 
 import com.eycwave.myApp.enums.Role;
 import com.eycwave.myApp.model.User;
-import com.eycwave.myApp.repository.CartRepository;
 import com.eycwave.myApp.repository.UserRepository;
 import com.eycwave.myApp.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
