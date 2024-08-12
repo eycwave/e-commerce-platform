@@ -1,4 +1,4 @@
-.products-container {
+.home-container {
   padding: 20px;
   max-width: 1200px;
   margin: auto;
@@ -8,6 +8,18 @@
   align-items: flex-start;
 }
 
+
+button {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:focus
+
+
+
+button:hover {
+  transform: scale(1.05);
+}
 
 .products-list {
   display: grid;
@@ -43,6 +55,7 @@
   overflow: hidden;
   position: relative; 
   transition: transform 0.3s ease; 
+  
 }
 
 
@@ -66,6 +79,7 @@
 .product-description {
   font-size: 1rem;
   color: #555;
+  margin-bottom: 10px;
 }
 
 .product-price {
@@ -142,6 +156,10 @@
 .cart-item {
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
 }
 
 .cart-item:last-child {
@@ -150,6 +168,8 @@
 
 .cart-item p {
   margin: 0;
+  padding-right: 10px;
+  flex-grow: 1;
 }
 
 

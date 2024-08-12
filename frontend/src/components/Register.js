@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../axiosConfig';
+import {jwtDecode} from 'jwt-decode';
 
 const Register = ({ onLoginClick }) => {
   const [firstname, setFirstname] = useState('');
@@ -10,6 +11,9 @@ const Register = ({ onLoginClick }) => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
+
+  const [userUuid, setUserUuid] = useState('');
+  const [error, setError] = useState('');
 
   const EMPTY_FIELD_ERROR = '*This field cannot be empty';
 
@@ -29,7 +33,7 @@ const Register = ({ onLoginClick }) => {
     if (!validateFields()) return;
 
     try {
-      await axios.post('/api/v1/auth/register', {
+      const response = await axios.post('/api/v1/auth/register', {
         firstname,
         lastname,
         age: Number(age),
@@ -37,7 +41,22 @@ const Register = ({ onLoginClick }) => {
         email,
         password,
       });
+
       setMessage('Registration successful!');
+
+      // Decode token and initialize cart
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      const decodedToken = jwtDecode(token);
+      setUserUuid(decodedToken.userUuid);
+
+      // Initialize the cart in the database
+      await axios.post(`/api/carts/save/${decodedToken.userUuid}`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
       setTimeout(() => {
         onLoginClick();
       }, 850);

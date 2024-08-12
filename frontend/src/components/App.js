@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Login from './Login';
 import Register from './Register';
-import Products from './Products';
+import Home from './Home';
 import './App.css';
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   if (isLoggedIn) {
-    return <Products />;
+    return <Home />;
   }
 
   return (

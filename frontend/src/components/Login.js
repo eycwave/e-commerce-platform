@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import axios from '../axiosConfig';
+import {jwtDecode} from 'jwt-decode';
 
 const Login = ({ onRegisterClick, onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [emailError, setEmailError] = useState('');
+
+  const [userUuid, setUserUuid] = useState('');
+  const [error, setError] = useState('');
 
   const handleLogin = async () => {
     setEmailError('');
@@ -14,6 +18,20 @@ const Login = ({ onRegisterClick, onSuccess }) => {
     try {
       const response = await axios.post('/api/v1/auth/login', {email,password,});
       localStorage.setItem('token', response.data.token);
+      
+      // Decode token and initialize cart
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      const decodedToken = jwtDecode(token);
+      setUserUuid(decodedToken.userUuid);
+
+      // Reset the cart in the database
+      await axios.put(`/api/carts/reset/${decodedToken.userUuid}`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      
       setTimeout(() => {
         onSuccess();
       }, 0);
