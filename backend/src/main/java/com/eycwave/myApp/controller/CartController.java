@@ -1,7 +1,7 @@
 package com.eycwave.myApp.controller;
 
-import com.eycwave.myApp.dto.CartDto;
-import com.eycwave.myApp.dto.response.CartResponse;
+import com.eycwave.myApp.model.dto.CartDto;
+import com.eycwave.myApp.model.dto.response.CartResponse;
 import com.eycwave.myApp.service.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

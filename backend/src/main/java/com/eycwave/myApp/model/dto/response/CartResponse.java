@@ -1,4 +1,4 @@
-package com.eycwave.myApp.dto.response;
+package com.eycwave.myApp.model.dto.response;
 
 import lombok.Data;
 

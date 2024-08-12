@@ -1,14 +1,14 @@
 package com.eycwave.myApp.service;
 
-import com.eycwave.myApp.dto.CartDto;
+import com.eycwave.myApp.model.dto.CartDto;
+import com.eycwave.myApp.model.dto.response.CartResponse;
+import com.eycwave.myApp.mapper.CartMapper;
 import com.eycwave.myApp.model.Cart;
 import com.eycwave.myApp.model.Product;
 import com.eycwave.myApp.model.User;
 import com.eycwave.myApp.repository.CartRepository;
 import com.eycwave.myApp.repository.ProductRepository;
 import com.eycwave.myApp.repository.UserRepository;
-import com.eycwave.myApp.dto.response.CartResponse;
-import com.eycwave.myApp.mapper.CartMapper;
 import com.eycwave.myApp.utils.CommonUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -49,8 +49,12 @@ public class CartService {
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         cart.setProductUUIDs("");
         cartRepository.save(cart);
+        CartDto cartDto = cartMapper.convertToDto(cart);
+        cartDto.setProductUuids(new String[0]);
+        cartDto.setProductList(new ArrayList<>());
         return createResponse(cart);
     }
+
 
     @Transactional
     public CartResponse updateCart(CartDto cartDto, String cartUuid) {
@@ -76,17 +80,12 @@ public class CartService {
                 .ifPresent(cartRepository::delete);
     }
 
-    public CartDto getCartByUuid(String cartUuid) {
-        return cartRepository.findByUuid(cartUuid)
-                .map(cartMapper::convertToDto)
-                .orElseThrow(() -> new NoSuchElementException("Cart not found with UUID: " + cartUuid));
-    }
-
     public CartDto getCartByUserUuid(String userUuid) {
         return cartRepository.findByUserUuid(userUuid)
                 .map(cartMapper::convertToDto)
                 .orElseThrow(() -> new NoSuchElementException("Cart not found for User UUID: " + userUuid));
     }
+
 
     public CartResponse createResponse(Cart cart) {
         CartResponse cartResponse = new CartResponse();

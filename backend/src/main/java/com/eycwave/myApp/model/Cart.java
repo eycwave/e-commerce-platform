@@ -27,7 +27,7 @@ public class Cart {
     private String productUUIDs;
 
     // Relations
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

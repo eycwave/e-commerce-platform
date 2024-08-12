@@ -1,6 +1,5 @@
-package com.eycwave.myApp.dto;
+package com.eycwave.myApp.model.dto;
 
-import com.eycwave.myApp.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,5 @@ public class CartDto {
     private LocalDate orderDate;
     private String userUuid;
     private String[] productUuids;
-    private List<Product> productList;
-
+    private List<ProductDto> productList;
 }
