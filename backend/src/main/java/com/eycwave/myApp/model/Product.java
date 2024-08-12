@@ -14,16 +14,16 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private long id;
+    private Long id;
     private String name;
     private String uuid;
     private String description;
-    private double price;
+    private Double price;
     private Timestamp createdAt;
     private String image;
-/*
+
     // Relations
     @ManyToMany(mappedBy = "productList")
     private List<Order> orderList;
-*/
+
 }

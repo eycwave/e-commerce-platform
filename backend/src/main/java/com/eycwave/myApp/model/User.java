@@ -26,7 +26,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue
     @Column(name = "user_id")
-    private Integer id;
+    private Long id;
     private String uuid;
     private String firstname;
     private String lastname;
@@ -71,9 +71,9 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-/*
+
     // Relations
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orderList;
-*/
+
 }
