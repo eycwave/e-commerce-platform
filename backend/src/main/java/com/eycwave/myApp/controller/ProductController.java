@@ -24,16 +24,22 @@ public class ProductController {
 
     }
 
+    @GetMapping("/get/{productUuid}")
+    public ResponseEntity<ProductDto> getProductByUuid(@PathVariable String productUuid) {
+        return new ResponseEntity<>(productService.getProductByUuid(productUuid), HttpStatus.OK);
+
+    }
+
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto) {
         return new ResponseEntity<>(productService.saveProduct(productDto), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{productUuid}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    public ResponseEntity<Void> deleteProduct(@PathVariable String productUuid) {
+        productService.deleteProduct(productUuid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

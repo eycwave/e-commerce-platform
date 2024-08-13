@@ -37,12 +37,12 @@ public class ProductService {
         return productMapper.convertToDto(savedProduct);
     }
 
-    public void deleteProduct(Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
+    public void deleteProduct(String productUuid) {
+        Optional<Product> optionalProduct = productRepository.findByUuid(productUuid);
         if (optionalProduct.isPresent()) {
             productRepository.delete(optionalProduct.get());
         } else {
-            throw new NoSuchElementException("Product with ID " + id + " not found.");
+            throw new NoSuchElementException("Product with UUID " + productUuid + " not found.");
         }
     }
 
