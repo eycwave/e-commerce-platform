@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
 import {jwtDecode} from 'jwt-decode';
 import './Home.css';
@@ -19,6 +20,8 @@ const Home = () => {
   const [cart, setCart] = useState([]);
   const [cartUuid, setCartUuid] = useState('');
   const [totalPrice, setTotalPrice] = useState(0);
+
+  const navigate = useNavigate();
 
   // Decode token for "Role" and "userUuid"
   useEffect(() => {
@@ -75,14 +78,16 @@ const Home = () => {
 };
 
   // [ADMIN] : "Delete Product" button
-  const handleDeleteProduct = async (id) => {
+  const handleDeleteProduct = async (productUuid) => {
     try {
-      await axios.delete(`/api/products/delete/${id}`, {
+      await axios.delete(`/api/products/delete/${productUuid}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      setProducts(products.filter(product => product.id !== id));
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product.uuid !== productUuid)
+      );
     } catch (error) {
       setError('Failed to delete product.');
       console.error('Error deleting product:', error);
@@ -171,19 +176,31 @@ const Home = () => {
       console.error('Error creating order:', error);
     }
   };
+
+  // Navigate to "Order.js" on "My Orders" button click
+  const handleMyOrdersClick = () => {
+    navigate('/orders', { state: { userRole, userUuid } });
+  };
   
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div className="home-container">
+      {/* Products Header */}
       <div className="products-header">
         <h1>Products</h1>
         {userRole.includes('ROLE_ADMIN') && (
           <div className="admin-button-container">
-            <button className="toggle-form" onClick={() => setShowForm(!showForm)}>
+            {/* Toggle Add Product Form */}
+            <button
+              className="toggle-form"
+              onClick={() => setShowForm(!showForm)}
+            >
               {showForm ? 'Cancel' : 'Add Product'}
             </button>
+
+            {/* Add Product Form */}
             {showForm && (
               <form className="product-form-container" onSubmit={handleAddProduct}>
                 <div className="product-form-field">
@@ -233,13 +250,15 @@ const Home = () => {
         )}
       </div>
 
+      {/* Products List */}
       <div className="products-list">
         {products.map((product) => {
           const price = parseFloat(product.price);
           return (
-            <div key={product.id} className="product-item">
+            <div key={product.uuid} className="product-item">
+              {/* Delete Button for Admin */}
               {userRole.includes('ROLE_ADMIN') && (
-                <button className="delete-button" onClick={() => handleDeleteProduct(product.id)}>
+                <button className="delete-button" onClick={() => handleDeleteProduct(product.uuid)}>
                   &#10006;
                 </button>
               )}
@@ -248,35 +267,41 @@ const Home = () => {
                 <h2 className="product-name">{product.name}</h2>
                 <p className="product-description">{product.description}</p>
                 <p className="product-price">${isNaN(price) ? 'N/A' : price.toFixed(2)}</p>
-                <button onClick={() => handleAddToCart(product)}>Buy</button>
+                <button className="buy-button" onClick={() => handleAddToCart(product)}>Buy</button>              
               </div>
             </div>
           );
         })}
       </div>
 
+      {/* Cart Container */}
       <div className="cart-container">
-      <h2>Cart</h2>
-      {Array.isArray(cart) && cart.length > 0 ? (
-        <>
-          {cart.map((item, index) => (
-            <div key={index} className="cart-item">
-              <p>{item.name}</p>
-              <p>${parseFloat(item.price).toFixed(2)}</p>
+        <h2>Cart</h2>
+        {Array.isArray(cart) && cart.length > 0 ? (
+          <>
+            {cart.map((item, index) => (
+              <div key={index} className="cart-item">
+                <p>{item.name}</p>
+                <p>${parseFloat(item.price).toFixed(2)}</p>
+              </div>
+            ))}
+            <div className="cart-totals">
+              <p>Total Price: ${totalPrice.toFixed(2)}</p>
             </div>
-          ))}
-          <div className="cart-totals">
-            <p>Total Price: ${totalPrice.toFixed(2)}</p>
-          </div>
-        </>
-      ) : (
-        <p>Your cart is empty.</p>
-      )}
-      <button className="create-order-button" onClick={handleCreateOrder}>
-        Create Order
+          </>
+        ) : (
+          <p>Your cart is empty.</p>
+        )}
+        <button className="create-order-button" disabled={cart.length === 0} onClick={handleCreateOrder}>
+          Create Order
+        </button>
+      </div>
+
+      {/* My Orders Button */}
+      <button className="my-orders-button" onClick={handleMyOrdersClick}>
+        My Orders
       </button>
     </div>
-  </div>
   );
 };
 
