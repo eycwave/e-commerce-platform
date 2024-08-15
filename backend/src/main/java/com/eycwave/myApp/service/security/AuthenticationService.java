@@ -1,12 +1,11 @@
-package com.eycwave.myApp.service;
+package com.eycwave.myApp.service.security;
 
 import com.eycwave.myApp.enums.Role;
 import com.eycwave.myApp.model.User;
 import com.eycwave.myApp.repository.UserRepository;
-import com.eycwave.myApp.security.auth.AuthenticationResponse;
-import com.eycwave.myApp.security.auth.LoginRequest;
-import com.eycwave.myApp.security.auth.RegisterRequest;
-import com.eycwave.myApp.security.config.JwtService;
+import com.eycwave.myApp.model.dto.response.AuthenticationResponse;
+import com.eycwave.myApp.model.dto.request.LoginRequest;
+import com.eycwave.myApp.model.dto.request.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

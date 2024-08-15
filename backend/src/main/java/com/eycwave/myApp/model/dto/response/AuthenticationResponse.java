@@ -1,4 +1,4 @@
-package com.eycwave.myApp.security.auth;
+package com.eycwave.myApp.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

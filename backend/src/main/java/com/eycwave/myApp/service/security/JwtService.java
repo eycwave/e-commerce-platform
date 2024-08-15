@@ -1,4 +1,4 @@
-package com.eycwave.myApp.security.config;
+package com.eycwave.myApp.service.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

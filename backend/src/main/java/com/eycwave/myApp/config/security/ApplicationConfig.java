@@ -1,4 +1,4 @@
-package com.eycwave.myApp.security.config;
+package com.eycwave.myApp.config.security;
 
 import com.eycwave.myApp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

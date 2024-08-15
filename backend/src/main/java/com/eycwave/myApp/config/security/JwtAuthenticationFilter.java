@@ -1,5 +1,6 @@
-package com.eycwave.myApp.security.config;
+package com.eycwave.myApp.config.security;
 
+import com.eycwave.myApp.service.security.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
