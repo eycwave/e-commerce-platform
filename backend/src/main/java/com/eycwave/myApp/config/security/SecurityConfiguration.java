@@ -1,4 +1,4 @@
-package com.eycwave.myApp.security.config;
+package com.eycwave.myApp.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.eycwave.myApp.security.auth;
+package com.eycwave.myApp.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
