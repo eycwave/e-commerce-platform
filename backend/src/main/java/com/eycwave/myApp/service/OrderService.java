@@ -1,5 +1,6 @@
 package com.eycwave.myApp.service;
 
+import com.eycwave.myApp.kafka.KafkaOrderProducer;
 import com.eycwave.myApp.model.dto.OrderDto;
 import com.eycwave.myApp.enums.OrderStatus;
 import com.eycwave.myApp.mapper.OrderMapper;
@@ -31,6 +32,7 @@ public class OrderService {
     private final CartRepository cartRepository;
     private final CartService cartService;
 
+    private final KafkaOrderProducer kafkaOrderProducer;
 
     private final OrderMapper orderMapper;
 
@@ -49,9 +51,17 @@ public class OrderService {
 
     @Transactional
     public OrderDto saveOrder(OrderDto orderDto) {
-        Cart cart = cartRepository.findByUserUuid(orderDto.getUserUuid())
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+        String userUuid = orderDto.getUserUuid();
+        if(orderRepository.existsByUserUuid(userUuid)){
+            for(Order order : orderRepository.findByUserUuid(userUuid)){
+                if(order.getOrderStatus().equals(OrderStatus.PROCESSING.name())){
+                    throw new RuntimeException("User with UUID " + userUuid + " already has an order in processing.");
+                }
+            }
+        }
 
+        Cart cart = cartRepository.findByUserUuid(userUuid)
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
         String[] productUuids = CommonUtils.commaSeparatedStringToArray(cart.getProductUUIDs());
         List<Product> productList = new ArrayList<>();
         double totalAmount = 0.0;
@@ -73,12 +83,10 @@ public class OrderService {
                 .productList(productList)
                 .build();
 
-        Order savedOrder = orderRepository.save(order);
-        return orderMapper.convertToDto(savedOrder);
+        orderRepository.save(order);
+        OrderDto mappedOrderDto = orderMapper.convertToDto(order);
+        kafkaOrderProducer.sendOrder("orders", mappedOrderDto);
+        return mappedOrderDto;
     }
-
-
-
-
 
 }

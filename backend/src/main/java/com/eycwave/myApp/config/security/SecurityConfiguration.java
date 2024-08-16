@@ -53,6 +53,11 @@ public class SecurityConfiguration {
                                 .requestMatchers(PUT, "/api/carts/**").permitAll()
                                 .requestMatchers(DELETE, "/api/carts/**").permitAll()
 
+                                .requestMatchers(GET, "/api/bots/**").hasRole(ADMIN.name())
+                                .requestMatchers(POST, "/api/bots/**").hasRole(ADMIN.name())
+                                .requestMatchers(PUT, "/api/bots/**").hasRole(ADMIN.name())
+                                .requestMatchers(DELETE, "/api/bots/**").hasRole(ADMIN.name())
+
                                 .anyRequest()
                                 .authenticated()
                 )

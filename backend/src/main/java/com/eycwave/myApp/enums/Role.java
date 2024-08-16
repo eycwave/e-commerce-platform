@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 public enum Role {
 
     USER,
+    BOT,
     ADMIN;
 
     public List<SimpleGrantedAuthority> getAuthorities() {
