@@ -75,7 +75,7 @@ const Home = () => {
       setError('Failed to add product.');
       console.error('Error adding product:', error);
     }
-};
+  };
 
   // [ADMIN] : "Delete Product" button
   const handleDeleteProduct = async (productUuid) => {
@@ -182,6 +182,27 @@ const Home = () => {
     navigate('/orders', { state: { userRole, userUuid } });
   };
   
+  // [ADMIN] : "Start Bots" button
+  const handleStartBots = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(
+      '/api/bots/place-orders',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log('Bots started successfully:', response.data);
+  } catch (error) {
+    setError('Failed to start bots.');
+    console.error('Error starting bots:', error);
+  }
+};
+
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -267,7 +288,9 @@ const Home = () => {
                 <h2 className="product-name">{product.name}</h2>
                 <p className="product-description">{product.description}</p>
                 <p className="product-price">${isNaN(price) ? 'N/A' : price.toFixed(2)}</p>
-                <button className="buy-button" onClick={() => handleAddToCart(product)}>Buy</button>              
+                  <button className="buy-button" onClick={() => handleAddToCart(product)}>
+                    Buy
+                  </button>
               </div>
             </div>
           );
@@ -296,11 +319,20 @@ const Home = () => {
           Create Order
         </button>
       </div>
-
-      {/* My Orders Button */}
-      <button className="my-orders-button" onClick={handleMyOrdersClick}>
-        My Orders
-      </button>
+        <div>
+          <div>
+            {/* My Orders Button */}
+            <button className="my-orders-button" onClick={handleMyOrdersClick}>
+              {userRole === "ROLE_ADMIN" ? "All Orders" : "My Orders"}
+            </button>
+          </div>
+          <div>
+            {/* Start Bots Button */}
+            {userRole === "ROLE_ADMIN" && (
+              <button className="start-bots-button" onClick={handleStartBots}>Start Bots</button>
+            )}
+          </div>
+        </div>
     </div>
   );
 };

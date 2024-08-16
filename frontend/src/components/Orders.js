@@ -64,7 +64,7 @@ const Orders = () => {
   return (
     <div className="orders-container">
       <button className="back-button" onClick={() => navigate(-1)}>← Back</button>
-      <h1>My Orders</h1>
+      <h1>Orders</h1>
       {orders.length > 0 ? (
         orders.map((order) => (
           <div key={order.uuid} className="order-card">
