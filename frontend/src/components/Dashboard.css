@@ -1,0 +1,87 @@
+.dashboard-container {
+  padding: 300px;
+  position: relative;
+}
+
+.dashboard-actions {
+  margin-top: -250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.dashboard-admin-section {
+  margin: 0 10px;
+  position: relative;
+}
+
+.dashboard-toggle-form {
+  padding: 20px 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dashboard-toggle-form:hover {
+  background-color: #0056b3;
+}
+
+.dashboard-admin-button {
+  padding: 20px 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.dashboard-admin-button:hover {
+  background-color: #0056b3;
+}
+
+.dashboard-product-form {
+  margin-top: 20px;
+  margin-left: -30px;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  width: 100%;
+  
+  position: absolute;
+  top: 50px;
+  left: 0;
+  z-index: 1;
+}
+
+.dashboard-product-form-field {
+  margin-bottom: 10px;
+  margin-left: -20px;
+}
+
+.dashboard-product-form-field label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.dashboard-product-form-field input {
+  width: calc(100% - 5px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.dashboard-submit-button {
+  padding: 20px 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dashboard-submit-button:hover {
+  background-color: #0056b3;
+}

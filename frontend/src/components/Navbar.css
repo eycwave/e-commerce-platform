@@ -1,0 +1,118 @@
+.navbar {
+  background-color: #1b5e20;
+  color: #ffffff;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.3s ease;
+  margin-bottom: 60px;
+}
+
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.navbar-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #c8e6c9;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.navbar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.navbar-menu li {
+  margin: 0 1rem;
+  position: relative;
+}
+
+.navbar-menu a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  display: block;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-menu a:hover {
+  color: #a5d6a7;
+  transform: translateY(-2px);
+}
+
+.navbar-menu li::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #a5d6a7;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.navbar-menu li:hover::after {
+  transform: scaleX(1);
+}
+.logout-button {
+  background-color: transparent;
+  border: none;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  outline: none;
+}
+
+.logout-button:hover {
+  color: #a5d6a7;
+  transform: translateY(-2px);
+}
+
+.logout-button:focus {
+  outline: none;
+}
+
+.logout-button-container {
+  position: relative;
+  margin: 0 1rem;
+  display: inline-block;
+}
+
+.logout-button-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background-color: #a5d6a7;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.logout-button-container:hover::after {
+  transform: scaleX(1);
+}
