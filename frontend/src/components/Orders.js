@@ -66,11 +66,10 @@ const Orders = () => {
         {userRole === "ROLE_ADMIN" && (
           <button className="broadcast-button" onClick={() => navigate('/broadcast-orders')}>Broadcast</button>
         )}
-
       </div>
       <h1>Orders</h1>
       {orders.length > 0 ? (
-        orders.map((order) => (
+        orders.slice().reverse().map((order) => (
           <div key={order.uuid} className="order-card">
             <div className="order-header">
               <div className="order-number">Order Number: {order.orderNumber}</div>
@@ -107,6 +106,7 @@ const Orders = () => {
       )}
     </div>
   );
+  
 };
 
 export default Orders;
