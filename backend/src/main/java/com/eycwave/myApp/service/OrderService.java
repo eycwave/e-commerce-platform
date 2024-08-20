@@ -12,6 +12,7 @@ import com.eycwave.myApp.repository.OrderRepository;
 import com.eycwave.myApp.repository.ProductRepository;
 import com.eycwave.myApp.repository.UserRepository;
 import com.eycwave.myApp.utils.CommonUtils;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -88,5 +89,20 @@ public class OrderService {
         kafkaOrderProducer.sendOrder("orders", mappedOrderDto);
         return mappedOrderDto;
     }
+
+    public OrderDto changeOrderStatusByUuid(String orderUuid) {
+        Order order = orderRepository.findByUuid(orderUuid)
+                .orElseThrow(() -> new EntityNotFoundException("Order not found with UUID: " + orderUuid));
+
+        order.setOrderStatus(order.getOrderStatus().equals(OrderStatus.PROCESSING.name())
+                ? OrderStatus.COMPLETED.name()
+                : OrderStatus.PROCESSING.name());
+
+        orderRepository.save(order);
+
+        return orderMapper.convertToDto(order);
+    }
+
+
 
 }

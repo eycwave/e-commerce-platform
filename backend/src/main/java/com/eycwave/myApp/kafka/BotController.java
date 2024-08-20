@@ -31,4 +31,10 @@ public class BotController {
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
+    @PostMapping("/save")
+    public ResponseEntity<String> saveBots(@RequestBody Integer count) {
+        String result = botService.saveBotsToDB(count);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
+    }
+
 }

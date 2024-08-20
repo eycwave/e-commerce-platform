@@ -48,6 +48,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(PUT, "/api/orders/**").hasRole(ADMIN.name())
                                 .requestMatchers(DELETE, "/api/orders/**").hasRole(ADMIN.name())
 
+                                .requestMatchers(GET,"/ws/**").permitAll()
+
                                 .requestMatchers(GET, "/api/carts/**").permitAll()
                                 .requestMatchers(POST, "/api/carts/**").permitAll()
                                 .requestMatchers(PUT, "/api/carts/**").permitAll()
@@ -57,6 +59,8 @@ public class SecurityConfiguration {
                                 .requestMatchers(POST, "/api/bots/**").hasRole(ADMIN.name())
                                 .requestMatchers(PUT, "/api/bots/**").hasRole(ADMIN.name())
                                 .requestMatchers(DELETE, "/api/bots/**").hasRole(ADMIN.name())
+
+
 
                                 .anyRequest()
                                 .authenticated()

@@ -49,9 +49,6 @@ public class DataInitializer {
                 userRepository.save(admin);
                 cartService.saveCart(admin.getUuid());
             }
-            if(!botService.anyExist()){
-                botService.saveBotsToDB();
-            }
         };
     }
 }

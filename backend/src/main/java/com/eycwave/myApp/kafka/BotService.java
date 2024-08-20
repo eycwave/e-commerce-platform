@@ -18,6 +18,7 @@ import com.eycwave.myApp.service.OrderService;
 import com.eycwave.myApp.repository.UserRepository;
 import com.eycwave.myApp.service.security.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.Uuid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -62,9 +63,9 @@ public class BotService {
 
         try {
             List<User> bots = getAllBots();
-            Product product = productRepository.findByUuid("42521d4f-1013-4223-b840-ef57b7d75b87").get();
+            Product product = productRepository.findByUuid("b904a985-9848-46d6-9835-f89a63857423").get();
             ProductDto productDto = productMapper.convertToDto(product);
-            String[] productUuids = {"42521d4f-1013-4223-b840-ef57b7d75b87", "42521d4f-1013-4223-b840-ef57b7d75b87"};
+            String[] productUuids = {"b904a985-9848-46d6-9835-f89a63857423", "b904a985-9848-46d6-9835-f89a63857423"};
 
             List<ProductDto> productDtoList = new ArrayList<>();
             productDtoList.add(productDto);
@@ -102,9 +103,9 @@ public class BotService {
         }
     }
 
-    public void saveBotsToDB() {
+    public String saveBotsToDB(int count) {
         try {
-            for (int i = 1; i <= 10; i++) {
+            for (int i = 1; i <= count; i++) {
                 String botName = "Bot" + i;
                 User bot = new User();
                 bot.setUuid(UUID.randomUUID().toString());
@@ -112,10 +113,7 @@ public class BotService {
                 bot.setLastname("BOT");
                 bot.setAge(30L);
                 bot.setDepartment("BOT_PROFILE");
-                StringBuilder emailBuilder = new StringBuilder();
-                emailBuilder.append("bot");
-                emailBuilder.append(i);
-                String email = emailBuilder.toString();
+                String email = Uuid.randomUuid().toString();
                 bot.setEmail(email);
                 bot.setPassword(passwordEncoder.encode("123"));
                 bot.setRole(Role.BOT);
@@ -123,8 +121,10 @@ public class BotService {
 
                 cartService.saveCart(bot.getUuid());
             }
+            return "Bots saved successfully.";
         } catch (Exception e) {
             e.printStackTrace();
+            return "Failed to save bots.";
         }
     }
 

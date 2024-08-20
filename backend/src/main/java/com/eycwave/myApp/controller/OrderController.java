@@ -32,5 +32,11 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.saveOrder(orderDto));
     }
 
+    @PutMapping("/change-status/{orderUuid}")
+    public ResponseEntity<OrderDto> changeOrderStatus(@PathVariable String orderUuid) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.changeOrderStatusByUuid(orderUuid));
+    }
+
+
 
 }
