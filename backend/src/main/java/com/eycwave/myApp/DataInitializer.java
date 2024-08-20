@@ -29,7 +29,7 @@ public class DataInitializer {
     private BotService botService;
 
     @Bean
-    // It initializes ADMIN and BOT profiles.
+    // It initializes ADMIN.
     public CommandLineRunner init() {
         return args -> {
             if (userRepository.findByEmail("admin").isEmpty()) {
