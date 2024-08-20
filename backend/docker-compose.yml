@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    ports:
+      - "2181:2181"  # Zookeeper runs on port 2181
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"  # Allows anonymous login to Zookeeper
+
+  kafka:
+    image: wurstmeister/kafka:latest
+    ports:
+      - "9092:9092"  # Kafka broker runs on port 9092
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092  # Advertise Kafka on localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT  # Define listener security protocol
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092  # Kafka listens on all network interfaces on port 9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT  # Communication between brokers uses PLAINTEXT
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181  # Connect Kafka to the Zookeeper service
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Required for Kafka to resolve advertised listener
+    depends_on:
+      - zookeeper  # Kafka waits for Zookeeper to start before it starts
+
+  postgres:
+    image: postgres:13  # Use PostgreSQL version 13
+    environment:
+      POSTGRES_USER: YOUR_DB_USERNAME  # Database username
+      POSTGRES_PASSWORD: YOUR_DB_PASSWORD  # Database password
+      POSTGRES_DB: YOUR_DB  # Database name
+    ports:
+      - "5433:5432"  # PostgreSQL runs on port 5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Persist PostgreSQL data
+
+volumes:
+  pgdata:  # Define a named volume for PostgreSQL data persistence
