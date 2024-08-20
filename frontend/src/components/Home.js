@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import './Home.css';
 
 const Home = () => {
@@ -41,7 +41,8 @@ const Home = () => {
     decodeToken();
   }, []);
 
-  // Get products directly from DB.
+  /* Product Operations */
+  // Fetch "Products" directly from DB.
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -56,26 +57,6 @@ const Home = () => {
     };
     fetchProducts();
   }, []);
-
-  // [ADMIN] : "Add Product" button
-  const handleAddProduct = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('/api/products/add', newProduct, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      const addedProduct = response.data;
-      
-      setProducts([...products, addedProduct]);
-      setNewProduct({ name: '', description: '', price: '', image: '' });
-      setShowForm(false);
-    } catch (error) {
-      setError('Failed to add product.');
-      console.error('Error adding product:', error);
-    }
-  };
 
   // [ADMIN] : "Delete Product" button
   const handleDeleteProduct = async (productUuid) => {
@@ -94,113 +75,110 @@ const Home = () => {
     }
   };
 
-  // [ADMIN] : Check updates for products changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
+  /* Cart Operations */
+  const calculateTotalPrice = (cartItems) => {
+    return cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
   };
 
-  // Add products to cart
+  // Fetch cart data
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get(`/api/carts/user/${userUuid}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      const { uuid, productList } = response.data;
+      setCartUuid(uuid);
+      setCart(productList || []);
+      setTotalPrice(calculateTotalPrice(productList || []));
+    } catch (error) {
+      setError('Failed to fetch cart.');
+      console.error('Error fetching cart:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (userUuid) {
+      fetchCart();
+    }
+  }, [userUuid]);
+
+  // Add product to cart
   const handleAddToCart = async (product) => {
     try {
-      const cartResponse = await axios.get(`/api/carts/user/${userUuid}`, {
+      const response = await axios.get(`/api/carts/user/${userUuid}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
-  
-      const cartUuid = cartResponse.data.uuid;
-      const existingProducts = cartResponse.data.productList || []; 
-      const updatedProductList = [...existingProducts, product];
-  
-      const payload = {
-        uuid: cartUuid,
+
+      const { uuid, productList } = response.data;
+      const updatedProductList = [...(productList || []), product];
+
+      await axios.put(`/api/carts/update/${uuid}`, {
+        uuid,
         productUuids: updatedProductList.map((p) => p.uuid),
-      };
-      await axios.put(`/api/carts/update/${cartUuid}`, payload, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-
-      const updateCartTotals = (cartItems) => {
-        return cartItems.reduce((total, item) => total + parseFloat(item.price), 0);
-      };
-
-      console.log(userUuid);
-      const updatedCartResponse = await axios.get(`/api/carts/user/${userUuid}`, {
+      }, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
 
-      setCart(updatedCartResponse.data.productList || []);
-      setCartUuid(cartUuid);
-      setTotalPrice(updateCartTotals(updatedCartResponse.data.productList));
+      setCart(updatedProductList);
+      setCartUuid(uuid);
+      setTotalPrice(calculateTotalPrice(updatedProductList));
     } catch (error) {
       setError('Failed to add product to cart.');
       console.error('Error adding to cart:', error);
     }
   };
-  
+
+  // Reset cart
+  const resetCart = async () => {
+    try {
+      if (userUuid) {
+        await axios.put(`/api/carts/reset/${userUuid}`, {}, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setCart([]);
+        setCartUuid('');
+        setTotalPrice(0);
+      }
+    } catch (error) {
+      setError('Failed to reset the cart.');
+      console.error('Error resetting the cart:', error);
+    }
+  };
+
   // Create order
   const handleCreateOrder = async () => {
     try {
       const orderPayload = {
         userUuid: userUuid,
         productUuids: cart.map((product) => product.uuid),
-        totalAmount: totalPrice 
+        totalAmount: totalPrice
       };
-  
       const token = localStorage.getItem('token');
-  
-      await axios.post('/api/orders/save', orderPayload, {
+      const response = await axios.post('/api/orders/save', orderPayload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
-      await axios.put(`/api/carts/reset/${userUuid}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
-      setCart([]);
-      setCartUuid('');
-      setTotalPrice(0);
-      
-      
+      resetCart();
     } catch (error) {
-      setError('Failed to create order.');
+      if (error.response && error.response.status === 409) {
+        setError('You already have an order in processing. Please wait for it to be completed before creating a new one.');
+      } else {
+        setError('Failed to create order.');
+      }
       console.error('Error creating order:', error);
     }
+    resetCart();
   };
-
-  // Navigate to "Order.js" on "My Orders" button click
-  const handleMyOrdersClick = () => {
-    navigate('/orders', { state: { userRole, userUuid } });
-  };
-  
-  // [ADMIN] : "Start Bots" button
-  const handleStartBots = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const response = await axios.post(
-      '/api/bots/place-orders',
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    console.log('Bots started successfully:', response.data);
-  } catch (error) {
-    setError('Failed to start bots.');
-    console.error('Error starting bots:', error);
-  }
-};
 
 
   if (loading) return <p>Loading...</p>;
@@ -208,69 +186,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Products Header */}
-      <div className="products-header">
-        <h1>Products</h1>
-        {userRole.includes('ROLE_ADMIN') && (
-          <div className="admin-button-container">
-            {/* Toggle Add Product Form */}
-            <button
-              className="toggle-form"
-              onClick={() => setShowForm(!showForm)}
-            >
-              {showForm ? 'Cancel' : 'Add Product'}
-            </button>
-
-            {/* Add Product Form */}
-            {showForm && (
-              <form className="product-form-container" onSubmit={handleAddProduct}>
-                <div className="product-form-field">
-                  <label>Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={newProduct.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="product-form-field">
-                  <label>Description</label>
-                  <input
-                    type="text"
-                    name="description"
-                    value={newProduct.description}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="product-form-field">
-                  <label>Price</label>
-                  <input
-                    type="number"
-                    name="price"
-                    value={newProduct.price}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="product-form-field">
-                  <label>Image URL</label>
-                  <input
-                    type="text"
-                    name="image"
-                    value={newProduct.image}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <button type="submit">Submit</button>
-              </form>
-            )}
-          </div>
-        )}
-      </div>
-
       {/* Products List */}
       <div className="products-list">
         {products.map((product) => {
@@ -288,9 +203,9 @@ const Home = () => {
                 <h2 className="product-name">{product.name}</h2>
                 <p className="product-description">{product.description}</p>
                 <p className="product-price">${isNaN(price) ? 'N/A' : price.toFixed(2)}</p>
-                  <button className="buy-button" onClick={() => handleAddToCart(product)}>
-                    Buy
-                  </button>
+                <button className="buy-button" onClick={() => handleAddToCart(product)}>
+                  Buy
+                </button>
               </div>
             </div>
           );
@@ -299,7 +214,12 @@ const Home = () => {
 
       {/* Cart Container */}
       <div className="cart-container">
-        <h2>Cart</h2>
+        <div className="cart-header">
+          <h2>Cart</h2>
+          <button className="reset-cart-button" disabled={cart.length === 0} onClick={resetCart}>
+            Reset Cart
+          </button>
+        </div>
         {Array.isArray(cart) && cart.length > 0 ? (
           <>
             {cart.map((item, index) => (
@@ -319,20 +239,6 @@ const Home = () => {
           Create Order
         </button>
       </div>
-        <div>
-          <div>
-            {/* My Orders Button */}
-            <button className="my-orders-button" onClick={handleMyOrdersClick}>
-              {userRole === "ROLE_ADMIN" ? "All Orders" : "My Orders"}
-            </button>
-          </div>
-          <div>
-            {/* Start Bots Button */}
-            {userRole === "ROLE_ADMIN" && (
-              <button className="start-bots-button" onClick={handleStartBots}>Start Bots</button>
-            )}
-          </div>
-        </div>
     </div>
   );
 };

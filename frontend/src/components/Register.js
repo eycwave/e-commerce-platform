@@ -44,13 +44,11 @@ const Register = ({ onLoginClick }) => {
 
       setMessage('Registration successful!');
 
-      // Decode token and initialize cart
       const token = response.data.token;
       localStorage.setItem('token', token);
       const decodedToken = jwtDecode(token);
       setUserUuid(decodedToken.userUuid);
 
-      // Initialize the cart in the database
       await axios.post(`/api/carts/save/${decodedToken.userUuid}`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

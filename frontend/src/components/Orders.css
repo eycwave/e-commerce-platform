@@ -1,8 +1,13 @@
+body {
+  padding-top: 50px;
+}
+
 .orders-container {
   padding: 20px;
   background-color: #f9f9f9;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
 }
 
 .order-card {
@@ -110,10 +115,29 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  margin-top: 20px;
   margin-bottom: 20px;
+  margin-right: auto;
 }
 
 .back-button:hover {
   background-color: #0056b3;
 }
 
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.broadcast-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}

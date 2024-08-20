@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f2f5;
+  background-color: #e8f5e9;
   margin: 0;
   overflow-x: hidden;
 }
@@ -8,10 +8,11 @@ body {
 .app {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: top;
   align-items: center;
-  height: 100vh;
-  overflow: auto;
+  min-height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .container {
@@ -33,11 +34,13 @@ body {
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
+  margin: auto;
 }
 
 .form-container h2 {
   margin-bottom: 20px;
   font-size: 1.5rem;
+  color: #1b5e20;
 }
 
 .form-field {
@@ -49,7 +52,6 @@ body {
 .form-container input {
   width: 100%;
   padding: 10px;
-  margin: 0;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
@@ -59,7 +61,7 @@ body {
 .form-container button {
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
+  background-color: #2e7d32;
   border: none;
   color: white;
   border-radius: 4px;
@@ -69,11 +71,11 @@ body {
 }
 
 .form-container button:hover {
-  background-color: #0056b3;
+  background-color: #1b5e20;
 }
 
 .switch-form {
-  color: #007bff;
+  color: #2e7d32;
   cursor: pointer;
   margin-top: 10px;
   font-size: 1rem;
@@ -103,7 +105,6 @@ body {
   margin-top: 10px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .app {
     padding: 20px;

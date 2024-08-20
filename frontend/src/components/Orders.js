@@ -16,16 +16,14 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const url = userRole === 'ROLE_ADMIN' 
-          ? `/api/orders` 
-          : `/api/orders/user/${userUuid}`;
+        const url = `/api/orders/user/${userUuid}`;
         const response = await axios.get(url, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
         setOrders(response.data);
-        await fetchProducts(response.data); // Fetch products after orders
+        await fetchProducts(response.data);
       } catch (error) {
         setError('Failed to fetch orders.');
         console.error('Error fetching orders:', error);
@@ -63,7 +61,13 @@ const Orders = () => {
 
   return (
     <div className="orders-container">
-      <button className="back-button" onClick={() => navigate(-1)}>← Back</button>
+      <div className="button-group">
+        <button className="back-button" onClick={() => navigate(-1)}>← Back</button>
+        {userRole === "ROLE_ADMIN" && (
+          <button className="broadcast-button" onClick={() => navigate('/broadcast-orders')}>Broadcast</button>
+        )}
+
+      </div>
       <h1>Orders</h1>
       {orders.length > 0 ? (
         orders.map((order) => (

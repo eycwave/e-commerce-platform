@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from '../axiosConfig';
-import {jwtDecode} from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode'; // Ensure jwt-decode is imported correctly
 
 const Login = ({ onRegisterClick, onSuccess }) => {
   const [email, setEmail] = useState('');
@@ -16,25 +16,23 @@ const Login = ({ onRegisterClick, onSuccess }) => {
     setMessage('');
 
     try {
-      const response = await axios.post('/api/v1/auth/login', {email,password,});
-      localStorage.setItem('token', response.data.token);
-      
-      // Decode token and initialize cart
+      const response = await axios.post('/api/v1/auth/login', { email, password });
       const token = response.data.token;
       localStorage.setItem('token', token);
+      
+      // Decode token and initialize cart
       const decodedToken = jwtDecode(token);
       setUserUuid(decodedToken.userUuid);
 
       // Reset the cart in the database
       await axios.put(`/api/carts/reset/${decodedToken.userUuid}`, {}, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
       });
-      
-      setTimeout(() => {
-        onSuccess();
-      }, 0);
+
+      // Call onSuccess prop function
+      if (onSuccess) onSuccess();
     } catch (error) {
       console.error(error);
       setMessage('Invalid email address or password.');
