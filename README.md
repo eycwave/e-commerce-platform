@@ -76,8 +76,12 @@ If you wish to test the order functionality with bot users, you need to update t
    ```bash
    docker-compose up --build
    ```
-
-5. Access the application:
+   
+5. Start the Spring Boot application.
+   
+6. Start the React application.
+   
+7. Access the application:
    - Backend: `http://localhost:8080`
    - Frontend: `http://localhost:3000`
 
