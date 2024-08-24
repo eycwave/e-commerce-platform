@@ -36,6 +36,7 @@ A full-stack e-commerce platform built with a Spring Boot backend and a React fr
    cd e-commerce-platform
    ```
 3. Before running the project, update the `application.yml` file and the PostgreSQL section in the `docker-compose.yml` file with your database credentials and JWT secret key:
+
    **`application.yml` configuration:**
    ```yaml
    datasource:
