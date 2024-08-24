@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
 import { jwtDecode } from 'jwt-decode';
 import './Home.css';
+import { toast } from 'react-toastify';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [userRole, setUserRole] = useState('');
   const [userUuid, setUserUuid] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: '',
@@ -34,7 +35,7 @@ const Home = () => {
           setUserUuid(decodedToken.userUuid);
         }
       } catch (error) {
-        setError('Failed to decode token.');
+        toast.error('Failed to decode token.');
         console.error('Error decoding token:', error);
       }
     };
@@ -49,7 +50,7 @@ const Home = () => {
         const response = await axios.get('/api/products');
         setProducts(response.data);
       } catch (error) {
-        setError('Failed to fetch products.');
+        toast.error('Failed to fetch products.');
         console.error('Error fetching products:', error);
       } finally {
         setLoading(false);
@@ -70,7 +71,7 @@ const Home = () => {
         prevProducts.filter((product) => product.uuid !== productUuid)
       );
     } catch (error) {
-      setError('Failed to delete product.');
+      toast.error('Failed to delete product.');
       console.error('Error deleting product:', error);
     }
   };
@@ -94,7 +95,7 @@ const Home = () => {
       setCart(productList || []);
       setTotalPrice(calculateTotalPrice(productList || []));
     } catch (error) {
-      setError('Failed to fetch cart.');
+      toast.error('Failed to fetch cart.');
       console.error('Error fetching cart:', error);
     }
   };
@@ -130,7 +131,7 @@ const Home = () => {
       setCartUuid(uuid);
       setTotalPrice(calculateTotalPrice(updatedProductList));
     } catch (error) {
-      setError('Failed to add product to cart.');
+      toast.error('Failed to add product to cart.');
       console.error('Error adding to cart:', error);
     }
   };
@@ -149,7 +150,7 @@ const Home = () => {
         setTotalPrice(0);
       }
     } catch (error) {
-      setError('Failed to reset the cart.');
+      toast.error('Failed to reset the cart.');
       console.error('Error resetting the cart:', error);
     }
   };
@@ -160,25 +161,27 @@ const Home = () => {
       const orderPayload = {
         userUuid: userUuid,
         productUuids: cart.map((product) => product.uuid),
-        totalAmount: totalPrice
+        totalAmount: totalPrice,
       };
       const token = localStorage.getItem('token');
-      const response = await axios.post('/api/orders/save', orderPayload, {
+      await axios.post('/api/orders/save', orderPayload, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       resetCart();
+      toast.success('Order created successfully!');
     } catch (error) {
       if (error.response && error.response.status === 409) {
-        setError('You already have an order in processing. Please wait for it to be completed before creating a new one.');
+        toast.error('You already have an order in processing. Please wait for it to be completed before creating a new one.');
       } else {
-        setError('Failed to create order.');
+        toast.error('Failed to create order.');
       }
       console.error('Error creating order:', error);
     }
-    resetCart();
   };
+  
+
 
 
   if (loading) return <p>Loading...</p>;
@@ -186,6 +189,14 @@ const Home = () => {
 
   return (
     <div className="home-container">
+
+      {/* Error message display */}
+      {error && (
+        <div style={{ color: 'red', marginTop: '10px' }}>
+          {error}
+        </div>
+      )}
+
       {/* Products List */}
       <div className="products-list">
         {products.map((product) => {

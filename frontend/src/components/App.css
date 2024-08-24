@@ -5,19 +5,27 @@ body {
   overflow-x: hidden;
 }
 
+.login-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  align-items: center;
+  min-height: 80vh;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
 .app {
   display: flex;
   flex-direction: column;
-  justify-content: top;
   align-items: center;
-  min-height: 100vh;
+  min-height: 80vh;
   padding: 1rem;
   box-sizing: border-box;
 }
 
 .container {
   width: 100%;
-  max-width: 1200px;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -27,14 +35,14 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 100%;
   max-width: 400px;
+  width: 600px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  margin: auto;
+  justify-content: center;
 }
 
 .form-container h2 {
@@ -103,38 +111,4 @@ body {
 
 .message-container {
   margin-top: 10px;
-}
-
-@media (max-width: 768px) {
-  .app {
-    padding: 20px;
-  }
-
-  .form-container {
-    max-width: 90%;
-  }
-}
-
-@media (max-width: 480px) {
-  .form-container {
-    padding: 15px;
-  }
-
-  .form-container h2 {
-    font-size: 1.25rem;
-  }
-
-  .form-container input {
-    padding: 8px;
-    font-size: 0.875rem;
-  }
-
-  .form-container button {
-    padding: 10px;
-    font-size: 0.875rem;
-  }
-
-  .switch-form {
-    font-size: 0.875rem;
-  }
 }

@@ -7,7 +7,7 @@ import Order from './Orders';
 import Navbar from './Navbar';
 import Dashboard from './Dashboard';
 import BroadcastOrders from './BroadcastOrders';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import './App.css';
 
 const App = () => {
@@ -40,7 +40,7 @@ const App = () => {
 
   if (!isLoggedIn) {
     return (
-      <div className="app">
+      <div className="login-page">
         {isRegistered ? (
           <Login
             onRegisterClick={() => setIsRegistered(false)}
