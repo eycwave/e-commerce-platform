@@ -2,6 +2,12 @@
 
 A full-stack e-commerce platform built with a Spring Boot backend and a React frontend. The platform enables product management, order tracking, and secure user authentication.
 
+## Tutorial Video
+
+Check out the tutorial video for a detailed walkthrough.
+
+https://github.com/user-attachments/assets/50207c8d-88e6-4c90-b842-c6afefbc2670
+
 ## Features
 
 - **Product Management (Admin):**
@@ -84,9 +90,3 @@ If you wish to test the order functionality with bot users, you need to update t
 7. Access the application:
    - Backend: `http://localhost:8080`
    - Frontend: `http://localhost:3000`
-
-## Tutorial Video
-
-Check out the tutorial video for a detailed walkthrough.
-
-https://github.com/user-attachments/assets/50207c8d-88e6-4c90-b842-c6afefbc2670
